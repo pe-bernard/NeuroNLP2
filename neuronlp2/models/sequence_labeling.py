@@ -83,7 +83,7 @@ class BiRecurrentConv(nn.Module):
         # output from rnn [batch, length, hidden_size * 2]
         if mask is not None:
             # prepare packed_sequence
-            length = mask.sum(dim=1).long()
+            length = mask.sum(dim=1).long().cpu()
             packed_enc = pack_padded_sequence(enc, length, batch_first=True, enforce_sorted=False)
             packed_out, _ = self.rnn(packed_enc)
             output, _ = pad_packed_sequence(packed_out, batch_first=True)
