@@ -17,7 +17,20 @@ def load_embedding_dict(embedding, embedding_path, normalize_digits=True):
     :return: embedding dict, embedding dimention, caseless
     """
     print("loading embedding: %s from %s" % (embedding, embedding_path))
-    if embedding == 'word2vec':
+    if embedding == 'gensim_keyedvectors':
+        # loading word2vec
+        word2vec = KeyedVectors.load(embedding_path)
+        embedd_dim = -1
+        embedd_dict = OrderedDict()
+        for word, embedding in zip(word2vec.vocab, word2vec.vectors):
+            e = embedding.tolist()
+            embedd_dict[word] = e
+            if embedd_dim < 0:
+                embedd_dim = len(e)
+            else:
+                assert (embedd_dim == len(e))
+        return embedd_dict, embedd_dim
+    elif embedding == 'word2vec':
         # loading word2vec
         word2vec = KeyedVectors.load_word2vec_format(embedding_path, binary=True)
         embedd_dim = -1
@@ -29,7 +42,6 @@ def load_embedding_dict(embedding, embedding_path, normalize_digits=True):
                 embedd_dim = len(e)
             else:
                 assert (embedd_dim == len(e))
-        embedd_dim = word2vec.vector_size
         return embedd_dict, embedd_dim
     elif embedding == 'glove':
         # loading GloVe
