@@ -3,7 +3,7 @@ __author__ = 'max'
 from collections import OrderedDict
 import pickle
 import numpy as np
-from gensim.models.word2vec import Word2Vec
+from gensim.models import KeyedVectors
 import gzip
 
 from neuronlp2.io.common import DIGIT_RE
@@ -19,9 +19,19 @@ def load_embedding_dict(embedding, embedding_path, normalize_digits=True):
     print("loading embedding: %s from %s" % (embedding, embedding_path))
     if embedding == 'word2vec':
         # loading word2vec
-        word2vec = Word2Vec.load_word2vec_format(embedding_path, binary=True)
+        word2vec = KeyedVectors.load_word2vec_format(embedding_path, binary=True)
+        embedd_dim = -1
+        embedd_dict = OrderedDict()
+
+        for word, embedding in zip(word2vec.vocab, word2vec.vectors):
+            e = embedding.tolist()
+            embedd_dict[word] = e
+            if embedd_dim < 0:
+                embedd_dim = len(e)
+            else:
+                assert (embedd_dim == len(e))
         embedd_dim = word2vec.vector_size
-        return word2vec, embedd_dim
+        return embedd_dict, embedd_dim
     elif embedding == 'glove':
         # loading GloVe
         embedd_dim = -1
