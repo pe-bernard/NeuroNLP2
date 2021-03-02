@@ -22,7 +22,6 @@ def load_embedding_dict(embedding, embedding_path, normalize_digits=True):
         word2vec = KeyedVectors.load_word2vec_format(embedding_path, binary=True)
         embedd_dim = -1
         embedd_dict = OrderedDict()
-
         for word, embedding in zip(word2vec.vocab, word2vec.vectors):
             e = embedding.tolist()
             embedd_dict[word] = e
