@@ -81,7 +81,7 @@ def main():
     parser.add_argument('--warmup_steps', type=int, default=0, metavar='N', help='number of steps to warm up (default: 0)')
     parser.add_argument('--weight_decay', type=float, default=0.0, help='weight for l2 norm decay')
     parser.add_argument('--unk_replace', type=float, default=0., help='The rate to replace a singleton word with UNK')
-    parser.add_argument('--embedding', choices=['glove', 'senna', 'sskip', 'polyglot'], help='Embedding for words', required=True)
+    parser.add_argument('--embedding', choices=['word2vec', 'glove', 'senna', 'sskip', 'polyglot'], help='Embedding for words', required=True)
     parser.add_argument('--embedding_dict', help='path for embedding dict')
     parser.add_argument('--train', help='path for training file.', required=True)
     parser.add_argument('--dev', help='path for dev file.', required=True)
